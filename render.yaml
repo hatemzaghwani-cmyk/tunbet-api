@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tunbet-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 3000
+    plan: free
+    healthCheckPath: /api/health
