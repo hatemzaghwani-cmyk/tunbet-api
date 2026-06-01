@@ -416,4 +416,13 @@ if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
 app.listen(PORT, () => {
   console.log(`🚀 TunBet API running on port ${PORT}`);
   console.log(`📊 Database: ${join(__dirname, '..', 'data', 'tunbet.db')}`);
+  
+  // Self-ping every 14 minutes to prevent Render free tier sleep
+  const SELF_URL = process.env.RENDER_EXTERNAL_URL || process.env.KOYEB_PUBLIC_DOMAIN || null;
+  if (SELF_URL) {
+    setInterval(() => {
+      fetch(`${SELF_URL}/api/health`).catch(() => {});
+    }, 14 * 60 * 1000);
+    console.log(`⏰ Self-ping enabled: ${SELF_URL}`);
+  }
 });
